@@ -14,16 +14,17 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
+/* الرسائل data-only — بنبني الإشعار بنفسنا (مفيش تكرار) */
 messaging.onBackgroundMessage(function (payload) {
-  const n = payload.notification || {};
-  const data = payload.data || {};
-  self.registration.showNotification(n.title || 'Trust ERP', {
-    body: n.body || '',
+  const d = (payload && payload.data) || {};
+  self.registration.showNotification(d.title || 'Trust ERP', {
+    body: d.body || '',
     dir: 'rtl',
     lang: 'ar',
-    data: data,
-    tag: data.tag || undefined,
-    icon: n.icon || undefined
+    icon: d.icon || './icon-192.png',
+    badge: './icon-192.png',
+    data: d,
+    tag: d.tag || undefined
   });
 });
 
